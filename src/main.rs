@@ -38,24 +38,31 @@ fn solve_cell(current_state: u8, neighbors: &[u8]) -> u8 {
         },
         1 => {
             // Red dies if surrounded by too many blues
-            if counts[3] >= 2 { return 0; }
+            if counts[2] >= 2 { return 0; }
             // Red dies if surrounded by too many reds
             if counts[1] >= 2 { return 0; }
             1
         },
         2 => {
             // Green dies if surrounded by too many reds
-            if counts[1] >= 2 { return 0; }
+            if counts[3] >= 2 { return 0; }
             // Green dies if surrounded by too many greens
             if counts[2] >= 2 { return 0; }
             2
         },
         3 => {
             // Blue dies if surrounded by too many greens
-            if counts[2] >= 2 { return 0; }
+            if counts[4] >= 2 { return 0; }
             // Green dies if surrounded by too many greens
             if counts[3] >= 2 { return 0; }
             3
+        },
+        4 => {
+            // Blue dies if surrounded by too many greens
+            if counts[1] >= 2 { return 0; }
+            // Green dies if surrounded by too many greens
+            if counts[4] >= 2 { return 0; }
+            4
         },
         _ => 0,
     }
@@ -77,10 +84,10 @@ fn model(app: &App) -> Model {
     let rows = 100;
     let cols = 100;
 
-    // Initialize random states (0 to 3)
+    // Initialize random states (0 to 4)
     let state_grid: Vec<u8> = (0..rows * cols)
         .map(|_| if rand::random::<f32>() > 0.8 { 
-            rand::random_range(1, 4)
+            rand::random_range(1, 5)
         } else { 
             0 
         })
@@ -106,7 +113,7 @@ fn model(app: &App) -> Model {
 }
 
 fn update(app: &App, model: &mut Model, _update: Update) {
-    if app.elapsed_frames() % 1 == 0 {
+    if app.elapsed_frames() % 10 == 0 {
         for y in 0..model.rows {
             for x in 0..model.cols {
                 let idx = y * model.cols + x;
