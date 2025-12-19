@@ -61,8 +61,6 @@ fn solve_cell(current_state: u8, neighbors: &[u8]) -> u8 {
     }
 }
 
-// --- END CONFIGURATION ---
-
 struct Model {
     texture: wgpu::Texture,
     state_grid: Vec<u8>,
